@@ -12,25 +12,25 @@ import org.vaadin.jouni.dom.Dom;
 import org.vaadin.jouni.dom.client.Css;
 
 import com.nemojmenervirat.submarines.logic.Game.Direction;
-import com.nemojmenervirat.submarines.ui.utils.Styles;
-import com.nemojmenervirat.submarines.ui.utils.Views;
+import com.nemojmenervirat.submarines.logic.GameCoordinator;
 import com.nemojmenervirat.submarines.logic.Submarine;
 import com.nemojmenervirat.submarines.logic.User;
+import com.nemojmenervirat.submarines.ui.utils.Styles;
+import com.nemojmenervirat.submarines.ui.utils.Views;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
 
 public class PlayGround extends AbsoluteLayout {
 
 	private Map<Submarine, Image> submarineImages = new HashMap<>();
-	private UI ui;
+	private SubmarinesUI ui;
 	private Label border;
 
-	public PlayGround(UI ui) {
+	public PlayGround(SubmarinesUI ui) {
 		this.ui = ui;
 		new Dom(this).getStyle().setProperty("background", "#57B3D8");
 	}
@@ -131,6 +131,8 @@ public class PlayGround extends AbsoluteLayout {
 			Button button = new Button("Back to main screen and play again :)");
 			button.addClickListener((e) -> {
 				ui.getNavigator().navigateTo(Views.MainScreen);
+				ui.getCurrentGame().leave(ui.getCurrentUser());
+				GameCoordinator.gameFinished(ui.getCurrentGame());
 			});
 			addComponent(label, "top:0px; left:0px; right: 0px; z-index: 100");
 			addComponent(button, "top:100px; left:0px; right: 0px; bottom: 0px; z-index: 100");

@@ -90,8 +90,8 @@ public class Game {
 		int rightLine = playgroundWidth - 100;
 
 		Random random = new Random(System.currentTimeMillis());
-		final int RandomYRange = playgroundHeight / 10;
-		final int RandomXRange = playgroundWidth / 10;
+		final int RandomYRange = playgroundHeight / 12;
+		final int RandomXRange = playgroundWidth / 7;
 
 		{
 
@@ -123,11 +123,26 @@ public class Game {
 			leftUserSubmarines.add(sub5);
 		}
 		{
-			Submarine sub1 = SubmarineFactory.createNew(Type.T1, Direction.RTL, rightLine, 100);
-			Submarine sub2 = SubmarineFactory.createNew(Type.T2, Direction.RTL, rightLine, 200);
-			Submarine sub3 = SubmarineFactory.createNew(Type.T3, Direction.RTL, rightLine, 300);
-			Submarine sub4 = SubmarineFactory.createNew(Type.T4, Direction.RTL, rightLine, 400);
-			Submarine sub5 = SubmarineFactory.createNew(Type.T5, Direction.RTL, rightLine, 500);
+			int randomY = random.nextInt(RandomYRange);
+			int randomX = random.nextInt(RandomXRange);
+			Submarine sub1 = SubmarineFactory.createNew(Type.T1, Direction.RTL, rightLine + RandomXRange / 2 - randomX,
+					playgroundHeight / 6 * 1 + RandomYRange / 2 - randomY);
+			randomY = random.nextInt(RandomYRange);
+			randomX = random.nextInt(RandomXRange);
+			Submarine sub2 = SubmarineFactory.createNew(Type.T2, Direction.RTL, rightLine + RandomXRange / 2 - randomX,
+					playgroundHeight / 6 * 2 + RandomYRange / 2 - randomY);
+			randomY = random.nextInt(RandomYRange);
+			randomX = random.nextInt(RandomXRange);
+			Submarine sub3 = SubmarineFactory.createNew(Type.T3, Direction.RTL, rightLine + RandomXRange / 2 - randomX,
+					playgroundHeight / 6 * 3 + RandomYRange / 2 - randomY);
+			randomY = random.nextInt(RandomYRange);
+			randomX = random.nextInt(RandomXRange);
+			Submarine sub4 = SubmarineFactory.createNew(Type.T4, Direction.RTL, rightLine + RandomXRange / 2 - randomX,
+					playgroundHeight / 6 * 4 + RandomYRange / 2 - randomY);
+			randomY = random.nextInt(RandomYRange);
+			randomX = random.nextInt(RandomXRange);
+			Submarine sub5 = SubmarineFactory.createNew(Type.T5, Direction.RTL, rightLine + RandomXRange / 2 - randomX,
+					playgroundHeight / 6 * 5 + RandomYRange / 2 - randomY);
 
 			rightUserSubmarines.add(sub1);
 			rightUserSubmarines.add(sub2);
@@ -157,7 +172,7 @@ public class Game {
 	}
 
 	public boolean isUserIn(User user) {
-		return leftUser.equals(user) || rightUser.equals(user);
+		return leftUser != null && leftUser.equals(user) || rightUser != null && rightUser.equals(user);
 	}
 
 	public boolean canMove(User user, Submarine submarine, Move move) {
@@ -232,20 +247,13 @@ public class Game {
 						: (int) (projectileRectangle.getX() - attacker.getRange()),
 				(int) projectileRectangle.getY(), (int) projectileRectangle.getWidth() + attacker.getRange(),
 				(int) projectileRectangle.getHeight());
-		System.out.println("PROJECTILE = " + projectileRectangle);
-		System.out.println("TRAJECTORY = " + projectileTrajectory);
 		for (Submarine submarine : possibleTargets) {
 			Rectangle intersection = submarine.getRectangle().intersection(projectileTrajectory);
-			System.out.println("POSSIBLE TARGET = " + submarine.getRectangle());
-			System.out.println("INTERSECTION = " + intersection);
 			if (intersection.getWidth() >= projectileRectangle.getWidth() / 2
 					&& intersection.getHeight() >= projectileRectangle.getHeight() / 2) {
 				target = submarine;
 				break;
 			}
-		}
-		if (target != null) {
-			System.out.println("TARGET = " + target.getRectangle());
 		}
 		return target;
 	}
@@ -307,8 +315,17 @@ public class Game {
 		}
 	}
 
-	public synchronized void surrender() {
-				
+	public void leave(User currentUser) {
+		if (leftUser != null && leftUser.equals(currentUser)) {
+			leftUser = null;
+		}
+		if (rightUser != null && rightUser.equals(currentUser)) {
+			rightUser = null;
+		}
+	}
+
+	public boolean isLeft() {
+		return leftUser == null && rightUser == null;
 	}
 
 }

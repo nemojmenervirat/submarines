@@ -21,7 +21,7 @@ public class GameCoordinator {
 	}
 
 	public synchronized static void gameFinished(Game game) {
-		if (game.isFinished()) {
+		if (game.isLeft()) {
 			games.remove(game);
 		}
 	}

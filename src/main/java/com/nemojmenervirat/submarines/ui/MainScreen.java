@@ -21,6 +21,7 @@ import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.RadioButtonGroup;
 import com.vaadin.ui.VerticalLayout;
 
@@ -77,6 +78,10 @@ public class MainScreen extends VerticalLayout implements View, UserBroadcastLis
 			buttonChallenge.addClickListener((e) -> {
 				if (userListSelect.getSelectedItems().size() == 1) {
 					User challenged = userListSelect.getSelectedItems().iterator().next();
+					if (GameCoordinator.isUserInGame(challenged)) {
+						Notification.show("User already in game", Notification.Type.HUMANIZED_MESSAGE);
+						return;
+					}
 					User challenger = UserCoordinator.getCurrent(ui);
 					if (!challenged.equals(challenger)) {
 						UserBroadcaster.broadcastChallenge(challenger, challenged, radioButtonGroupGameType.getValue());
