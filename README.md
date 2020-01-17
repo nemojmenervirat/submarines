@@ -1,4 +1,4 @@
 submarines
 ==============
 
-Submarines game in Vaadin
+Submarines game in Vaadin 8
