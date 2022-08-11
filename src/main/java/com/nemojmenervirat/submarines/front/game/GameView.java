@@ -52,7 +52,7 @@ public class GameView extends HorizontalLayout
     playGroundPanel = new Div(playGround);
 
     controlLayout = new ControlLayout(playGround, game, currentUser);
-    turnControlLayout = new TurnControlLayout(controlLayout, playGround, ui, game, currentUser);
+    turnControlLayout = new TurnControlLayout(controlLayout, playGround, game, currentUser);
 
 
     VerticalLayout sideLayout = new VerticalLayout(controlLayout, turnControlLayout);

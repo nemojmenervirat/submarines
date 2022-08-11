@@ -3,14 +3,13 @@ package com.nemojmenervirat.submarines.front.game;
 import com.nemojmenervirat.submarines.back.Game;
 import com.nemojmenervirat.submarines.back.Submarine;
 import com.nemojmenervirat.submarines.back.User;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class TurnControlLayout extends Div {
-  private UI ui;
+
   private Game game;
   private User currentUser;
 
@@ -20,9 +19,8 @@ public class TurnControlLayout extends Div {
   private static final String CUR_TUR = "Current turn: ";
   private static final String CUR_USER = "Current turn user: ";
 
-  public TurnControlLayout(ControlLayout controlLayout, PlayGround playGround, UI ui, Game game,
+  public TurnControlLayout(ControlLayout controlLayout, PlayGround playGround, Game game,
       User currentUser) {
-    this.ui = ui;
     this.game = game;
     this.currentUser = currentUser;
     labelTurn = new Label(CUR_TUR);
