@@ -42,6 +42,17 @@ window.animateProjectileHit = async function(element, wait) {
 	element.parentNode.removeChild(element);
 }
 
+window.animateSubmarineHit = async function(element, wait) {
+	let old = element.style.border;
+	await sleep(wait);
+	for (let i = 0; i < 3; i++) {
+		element.style.border = '2px solid red';
+		await sleep(400);
+		element.style.border = old;
+		await sleep(400);
+	}
+}
+
 window.animateExplosion = async function(element, wait) {
 	await sleep(wait);
 	element.className += ' explosionSprite';

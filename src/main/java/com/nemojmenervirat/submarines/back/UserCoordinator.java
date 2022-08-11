@@ -31,7 +31,7 @@ public class UserCoordinator {
 
   public boolean validateUsername(User user, String username) {
     return activeUsers.stream().filter(e -> !e.equals(user))
-        .anyMatch(e -> e.getUsername().equalsIgnoreCase(username));
+        .noneMatch(e -> e.getUsername().equalsIgnoreCase(username));
   }
 
 }

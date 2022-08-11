@@ -17,7 +17,9 @@ public class Game {
 
   @Getter
   private UUID id = UUID.randomUUID();
+  @Getter
   private User leftUser;
+  @Getter
   private User rightUser;
   private List<Submarine> leftUserSubmarines = new LinkedList<>();
   private List<Submarine> rightUserSubmarines = new LinkedList<>();

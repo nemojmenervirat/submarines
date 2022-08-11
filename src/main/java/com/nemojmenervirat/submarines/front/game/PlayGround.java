@@ -12,7 +12,7 @@ import com.nemojmenervirat.submarines.back.GameCoordinator;
 import com.nemojmenervirat.submarines.back.Submarine;
 import com.nemojmenervirat.submarines.back.User;
 import com.nemojmenervirat.submarines.front.common.AbsoluteLayout;
-import com.nemojmenervirat.submarines.front.home.HomeView;
+import com.nemojmenervirat.submarines.front.home.MatchmakingView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
@@ -93,7 +93,7 @@ public class PlayGround extends AbsoluteLayout {
 
   public synchronized void animateHit(Submarine submarine, int delay) {
     Image img = submarineImages.get(submarine);
-    js_animateProjectileHit(img.getElement(), delay);
+    js_animateSubmarineHit(img.getElement(), delay);
   }
 
   private void createExplosion(double x, double y, int delay) {
@@ -127,7 +127,7 @@ public class PlayGround extends AbsoluteLayout {
       label.getStyle().set("font-size", "360%");
       Button button = new Button("Back to main screen and play again :)");
       button.addClickListener((e) -> {
-        ui.navigate(HomeView.class);
+        ui.navigate(MatchmakingView.class);
         game.leave(currentUser);
         GameCoordinator.gameFinished(game);
       });
@@ -215,6 +215,10 @@ public class PlayGround extends AbsoluteLayout {
 
   private void js_animateProjectileHit(Element element, int wait) {
     executeJs("animateProjectileHit($0, $1);", element, wait);
+  }
+
+  private void js_animateSubmarineHit(Element element, int wait) {
+    executeJs("animateSubmarineHit($0, $1);", element, wait);
   }
 
   private void js_animateExplosion(Element element, int wait) {

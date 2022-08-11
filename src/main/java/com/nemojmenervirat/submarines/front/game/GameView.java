@@ -17,18 +17,17 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-@PageTitle("Battleground")
 @Route("game")
 @RequiredArgsConstructor
 @Log4j2
 public class GameView extends HorizontalLayout
-    implements GameBroadcastListener, HasUrlParameter<String> {
+    implements GameBroadcastListener, HasUrlParameter<String>, HasDynamicTitle {
 
   private final CurrentUser currentUser;
 
@@ -124,5 +123,14 @@ public class GameView extends HorizontalLayout
       currentGame = game;
       init(event.getUI(), game);
     }
+  }
+
+  @Override
+  public String getPageTitle() {
+    if (currentGame == null) {
+      return "Waiting for players | Submarines";
+    }
+    return currentGame.getLeftUser().getUsername() + " vs "
+        + currentGame.getRightUser().getUsername() + " | Submarines";
   }
 }

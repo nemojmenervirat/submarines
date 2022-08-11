@@ -32,13 +32,13 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-@PageTitle("Home")
-@Route("main")
+@PageTitle("Matchmaking | Submarines")
+@Route("matchmaking")
 @RouteAlias("")
 @RequiredArgsConstructor
 @Log4j2
 @UIScope
-public class HomeView extends HorizontalLayout
+public class MatchmakingView extends HorizontalLayout
     implements UserBroadcastListener, AfterNavigationObserver, BeforeLeaveObserver {
 
   private final UserCoordinator userCoordinator;
