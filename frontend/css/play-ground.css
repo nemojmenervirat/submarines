@@ -1,0 +1,52 @@
+@keyframes playv {
+	0% {
+		background-position-y: 0px;
+	}
+	100% {
+		background-position-y: -540px;
+	}
+}
+
+@keyframes playh {
+	0% {
+		background-position-x: 0px;
+	}
+	100% {
+		background-position-x: -900px;
+	}
+}
+
+@keyframes dot-anim-250 {
+	0% {
+		box-shadow: 0 0 0 0 #ffffff11, 0 0 0 1px #57B3D811, 0 0 0 3px #eeeeee11;
+	}
+	100% {
+		box-shadow: 0 0 0 0 #ffffff11, 0 0 0 230px #57B3D811, 0 0 0 250px #eeeeee11;
+	}
+}
+
+@keyframes dot-anim-500 {
+	0% {
+		box-shadow: 0 0 0 0 #ffffff11, 0 0 0 1px #57B3D811, 0 0 0 3px #eeeeee11;
+	}
+	100% {
+		box-shadow: 0 0 0 0 #ffffff11, 0 0 0 460px #57B3D811, 0 0 0 500px #eeeeee11;
+	}
+}
+
+
+ .explosionSprite {
+	width: 180px;
+	height: 180px;
+	background: url('images/explosions.png');
+	animation:  playh 0.6s steps(5) 3, playv 1.8s steps(3);
+ }
+ 
+ .sonarEffect250 {
+	animation: dot-anim-250 linear 1.5s;
+}
+ 
+ .sonarEffect500 {
+	animation: dot-anim-500 linear 2.5s;
+}	
+
