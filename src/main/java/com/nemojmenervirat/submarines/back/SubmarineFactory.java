@@ -61,6 +61,7 @@ public class SubmarineFactory {
         submarine.setHeight(36);
         submarine.setWidth(122);
         submarine.setTotalMovesPerTurn(3);
+        submarine.setTotalAttacksPerTurn(10);
         submarine.setTotalHp(7);
         submarine.setDamage(2);
         submarine.setRange(450);

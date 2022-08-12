@@ -1,4 +1,4 @@
-package com.nemojmenervirat.submarines.front.home;
+package com.nemojmenervirat.submarines.front.matchmaking;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -73,7 +73,7 @@ public class MatchmakingView extends HorizontalLayout
     binderCurrentUser.addValueChangeListener(e -> UserBroadcaster.broadcastUpdate(currentUser));
 
     setSizeFull();
-    radioButtonGroupUsers.setLabel("Other players");
+    radioButtonGroupUsers.setLabel("Other players (" + getOtherUsers().size() + ")");
     radioButtonGroupUsers.setItemLabelGenerator(User::getUsername);
     radioButtonGroupUsers.setWidthFull();
     radioButtonGroupUsers.setItems(getOtherUsers());
@@ -129,7 +129,10 @@ public class MatchmakingView extends HorizontalLayout
   @Override
   public void receiveActiveUsersChange() {
     log.debug("Received active users change for " + currentUser);
-    ui.access(() -> radioButtonGroupUsers.setItems(getOtherUsers()));
+    ui.access(() -> {
+      radioButtonGroupUsers.setItems(getOtherUsers());
+      radioButtonGroupUsers.setLabel("Other players (" + getOtherUsers().size() + ")");
+    });
   }
 
 
@@ -185,7 +188,6 @@ public class MatchmakingView extends HorizontalLayout
 
   @Override
   public void beforeLeave(BeforeLeaveEvent event) {
-    System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
     userCoordinator.unregister(currentUser);
   }
 }

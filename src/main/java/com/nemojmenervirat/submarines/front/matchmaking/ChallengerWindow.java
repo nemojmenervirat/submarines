@@ -1,4 +1,4 @@
-package com.nemojmenervirat.submarines.front.home;
+package com.nemojmenervirat.submarines.front.matchmaking;
 
 import com.nemojmenervirat.submarines.back.Game.GameType;
 import com.nemojmenervirat.submarines.back.User;

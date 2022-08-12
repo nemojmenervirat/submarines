@@ -42,18 +42,6 @@ public class ControlLayout extends AbsoluteLayout {
     this.playGround = playGround;
     this.game = game;
     this.currentUser = currentUser;
-    playGround.addClickListener((e) -> {
-      if (selectedSubmarine() != null
-          && !(selectedSubmarine().getStartX() + selectedSubmarine().getX() < e.getClientX()
-              && selectedSubmarine().getStartY() + selectedSubmarine().getY() < e.getClientY()
-              && selectedSubmarine().getStartX() + selectedSubmarine().getX()
-                  + selectedSubmarine().getWidth() > e.getClientX()
-              && selectedSubmarine().getStartY() + selectedSubmarine().getY()
-                  + selectedSubmarine().getHeight() > e.getClientY())) {
-        // setSelectedImage(null);
-        System.out.println("SELECTED = NULL");
-      }
-    });
 
     buttonRight.addClickListener((e) -> {
       if (selectedSubmarine() != null

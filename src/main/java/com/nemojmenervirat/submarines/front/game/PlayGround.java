@@ -12,7 +12,7 @@ import com.nemojmenervirat.submarines.back.GameCoordinator;
 import com.nemojmenervirat.submarines.back.Submarine;
 import com.nemojmenervirat.submarines.back.User;
 import com.nemojmenervirat.submarines.front.common.AbsoluteLayout;
-import com.nemojmenervirat.submarines.front.home.MatchmakingView;
+import com.nemojmenervirat.submarines.front.matchmaking.MatchmakingView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
@@ -71,7 +71,6 @@ public class PlayGround extends AbsoluteLayout {
   public synchronized void addSubmarine(ControlLayout controlLayout, Submarine submarine) {
     SubmarineImage image = new SubmarineImage(submarine);
     image.addClickListener((e) -> {
-      System.out.println("Image selected " + image);
       controlLayout.setSelectedImage(image);
     });
     submarineImages.put(submarine, image);
@@ -122,18 +121,17 @@ public class PlayGround extends AbsoluteLayout {
   }
 
   public void animateWinner(User winner) {
-    ui.access(() -> {
-      Label label = new Label(winner.getUsername() + " wins!");
-      label.getStyle().set("font-size", "360%");
-      Button button = new Button("Back to main screen and play again :)");
-      button.addClickListener((e) -> {
-        ui.navigate(MatchmakingView.class);
-        game.leave(currentUser);
-        GameCoordinator.gameFinished(game);
-      });
-      add(label, 0, 0, 0, 100);
-      add(button, 100, 0, 0f, 0f, 100f);
+    String info = winner.equals(currentUser) ? "You win!!! :D" : "You lose.. :(";
+    Label label = new Label(info);
+    label.getStyle().set("font-size", "360%");
+    Button button = new Button("Back to main screen and play again :)");
+    button.addClickListener((e) -> {
+      ui.navigate(MatchmakingView.class);
+      game.leave(currentUser);
+      GameCoordinator.gameFinished(game);
     });
+    add(label, 0, 0, 0, 100);
+    add(button, 100, 0, 0f, 0f, 100f);
   }
 
   public void animateProjectile(Submarine attacker, Submarine target) {
@@ -194,7 +192,7 @@ public class PlayGround extends AbsoluteLayout {
   }
 
   private void executeJs(String expression, Serializable... parameters) {
-    ui.getPage().executeJs(expression, parameters);
+    ui.access(() -> ui.getPage().executeJs(expression, parameters));
   }
 
   private void js_translate(Element element, int x, int y, int duration) {

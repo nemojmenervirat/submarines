@@ -10,16 +10,20 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import com.nemojmenervirat.submarines.back.SubmarineFactory.Type;
 import lombok.Getter;
+import lombok.Setter;
 
 public class Game {
 
   static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
   @Getter
+  @Setter
   private UUID id = UUID.randomUUID();
   @Getter
+  @Setter
   private User leftUser;
   @Getter
+  @Setter
   private User rightUser;
   private List<Submarine> leftUserSubmarines = new LinkedList<>();
   private List<Submarine> rightUserSubmarines = new LinkedList<>();

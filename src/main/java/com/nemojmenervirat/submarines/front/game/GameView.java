@@ -7,6 +7,7 @@ import com.nemojmenervirat.submarines.back.Game;
 import com.nemojmenervirat.submarines.back.Game.Direction;
 import com.nemojmenervirat.submarines.back.Game.GameBroadcastListener;
 import com.nemojmenervirat.submarines.back.Game.GameType;
+import com.nemojmenervirat.submarines.front.matchmaking.MatchmakingView;
 import com.nemojmenervirat.submarines.back.GameCoordinator;
 import com.nemojmenervirat.submarines.back.Submarine;
 import com.nemojmenervirat.submarines.back.User;
@@ -30,6 +31,7 @@ public class GameView extends HorizontalLayout
     implements GameBroadcastListener, HasUrlParameter<String>, HasDynamicTitle {
 
   private final CurrentUser currentUser;
+  private UI ui;
 
   private Game currentGame;
   private PlayGround playGround;
@@ -38,6 +40,7 @@ public class GameView extends HorizontalLayout
   private Div playGroundPanel;
 
   void init(UI ui, Game game) {
+    this.ui = ui;
     setSizeFull();
     setSpacing(false);
     setMargin(false);
@@ -91,23 +94,29 @@ public class GameView extends HorizontalLayout
 
   @Override
   public void receiveTurnEndBroadcast(User attacker) {
-    turnControlLayout.updateCurrentTurn();
-    controlLayout.reselect();
+    ui.access(() -> {
+      turnControlLayout.updateCurrentTurn();
+      controlLayout.reselect();
+    });
   }
 
   @Override
   public void receiveSubmarineHitBroadcast(Submarine attacked) {
-    if (attacked.getCurrentHp() > 0) {
-      playGround.animateHit(attacked, 500);
-    } else {
-      playGround.animateDeath(attacked, 500);
-    }
-    controlLayout.reselect();
+    ui.access(() -> {
+      if (attacked.getCurrentHp() > 0) {
+        playGround.animateHit(attacked, 500);
+      } else {
+        playGround.animateDeath(attacked, 500);
+      }
+      controlLayout.reselect();
+    });
   }
 
   @Override
   public void receiveGameFinishedBroadcast() {
-    playGround.animateWinner(currentGame.getWinner());
+    ui.access(() -> {
+      playGround.animateWinner(currentGame.getWinner());
+    });
   }
 
   @Override
@@ -115,10 +124,16 @@ public class GameView extends HorizontalLayout
     UUID gameId = UUID.fromString(parameter);
     Game game = GameCoordinator.findGame(gameId);
     if (game == null) {
-      game = GameCoordinator.reserveGame(currentUser, new User(), GameType.SHORT);
+      game = GameCoordinator.reserveGame(currentUser, null, GameType.SHORT);
+      game.setId(gameId);
+    } else {
+      if (game.getRightUser() == null) {
+        game.setRightUser(currentUser);
+      }
     }
     if (!game.isUserIn(currentUser)) {
       log.debug("User " + currentUser + " is not in game " + game);
+      event.forwardTo(MatchmakingView.class);
     } else {
       currentGame = game;
       init(event.getUI(), game);
@@ -127,7 +142,8 @@ public class GameView extends HorizontalLayout
 
   @Override
   public String getPageTitle() {
-    if (currentGame == null) {
+    if (currentGame == null || currentGame.getLeftUser() == null
+        || currentGame.getRightUser() == null) {
       return "Waiting for players | Submarines";
     }
     return currentGame.getLeftUser().getUsername() + " vs "
